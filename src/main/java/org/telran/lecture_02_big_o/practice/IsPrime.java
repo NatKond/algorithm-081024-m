@@ -13,13 +13,17 @@ public class IsPrime {
         System.out.println("isPrime(1) = " + isPrime(1));
         System.out.println("isPrime(2) = " + isPrime(2));
         System.out.println("isPrime(3) = " + isPrime(3));
+        System.out.println("isPrime(4) = " + isPrime(4));
         System.out.println("isPrime(9) = " + isPrime(9));
-        System.out.println("isPrime(9) = " + isPrime(427));
+        System.out.println("isPrime(11) = " + isPrime(11));
+        System.out.println("isPrime(21) = " + isPrime(21));
+        System.out.println("isPrime(427) = " + isPrime(427));
+        System.out.println("isPrime(1009) = " + isPrime(1009));
 
     }
 
     public static boolean isPrime(int number) {
-        if (number != 2 && number % 2 == 0) {
+        if (number <= 1 || number != 2 && number % 2 == 0) {
             return false;
         }
         for (int i = 3; i <= Math.sqrt(number); i += 2) {
