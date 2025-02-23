@@ -7,19 +7,18 @@ package org.telran.lecture_03_recursion.practice;
 
 public class Countdown {
     public static void main(String[] args) {
+        countdown(0);
+        System.out.println();
         countdown(3); // Выведет: 3 2 1 0 -1 -2 -3
-        countdown(5); // Выведет: 5 4 3 2 1 0 -1 -2 -3 -4 -5
+        System.out.println();
+        countdown(6); // Выведет: 5 4 3 2 1 0 -1 -2 -3 -4 -5
     }
 
     public static void countdown(int n) {
-        countdownRecursion(n, -n);
-        System.out.println();
-    }
-
-    private static void countdownRecursion(int n, int bound) {
         System.out.print(n + " ");
-        if (n > bound) {
-            countdownRecursion(n - 1, bound);
+        if (n != 0) {
+            countdown(n - 1);
+            System.out.print(-n + " ");
         }
     }
 }
