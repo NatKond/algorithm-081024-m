@@ -42,13 +42,39 @@ public class MergeSortedArrays {
         return mergedArray;
     }
 
+    public static int[] mergeSortedArraysWhile(int[] arr1, int[] arr2) {
+        int[] mergedArray = new int[arr1.length + arr2.length];
+        int index1 = 0;
+        int index2 = 0;
+        int indexMerged = 0;
+        while (index1 < arr1.length && index2 < arr2.length) {
+            if (arr1[index1] < arr2[index2]) {
+                mergedArray[indexMerged++] = arr1[index1++];
+            } else {
+                mergedArray[indexMerged++] = arr2[index2++];
+            }
+        }
+        while (indexMerged < mergedArray.length) {
+            if (index1 < arr1.length) {
+                mergedArray[indexMerged++] = arr1[index1++];
+            }
+            if (index2 < arr2.length){
+                mergedArray[indexMerged++] = arr2[index2++];
+            }
+        }
+        return mergedArray;
+    }
+
     public static void main(String[] args) {
-        int[] arr1 = {1, 3, 5, 7};
-        int[] arr2 = {2, 4, 6, 8};
+//      int[] arr1 = {1, 3, 5, 7};
+//      int[] arr2 = {2, 4, 6, 8};
+        int[] arr1 = {1, 2, 2, 5};
+        int[] arr2 = {1, 3, 4};
         int[] mergedArray = mergeSortedArrays(arr1, arr2);
+        int[] mergedArray2 = mergeSortedArraysWhile(arr1,arr2);
 
         System.out.print("Объединенный массив: ");
-        for (int num : mergedArray) {
+        for (int num : mergedArray2) {
             System.out.print(num + " ");
         }
     }
