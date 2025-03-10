@@ -10,16 +10,29 @@ package org.telran.lecture_05_merge.home_work;
 
 // Пример
 // Вход:
-    // 2 1 10 50 10
+// 2 1 10 50 10
 // Выход:
-    // 70
+// 70
 // Пояснение:
-    // Возможен такой порядок: 10 2 50 1 10
+// Возможен такой порядок: 10 2 50 1 10
 
+
+import java.util.Arrays;
+
+import static org.telran.lecture_05_merge.practice.MergeSort.mergeSort;
 
 public class Task03 {
     public static void main(String[] args) {
-        int[] prices = {2, 1, 10, 50, 10}; // Цены товаров которые вы купили
+        int[] prices = {2, 1, 10, 50, 10, 10, 3, 5, 5, 10}; // Цены товаров которые вы купили
+        System.out.println(getMaxDiscountedTotal(prices));
+    }
 
+    public static int getMaxDiscountedTotal(int[] prices) {
+        Arrays.sort(prices);
+        int sum = 0;
+        for (int i = prices.length / 2; i < prices.length; i++) {
+            sum += prices[i];
+        }
+        return sum;
     }
 }
