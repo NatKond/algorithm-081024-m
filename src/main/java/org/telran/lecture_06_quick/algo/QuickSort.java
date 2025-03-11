@@ -15,7 +15,6 @@ public class QuickSort {
         int[] array = {39, 22, 2, 55, 6, 20};
         quickSortRecursive(array, 0, array.length - 1);
         System.out.println(Arrays.toString(array));
-
     }
 
     public static void quickSortRecursive(int[] array, int start, int end) {

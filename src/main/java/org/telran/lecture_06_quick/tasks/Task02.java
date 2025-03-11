@@ -12,8 +12,15 @@ import java.util.Comparator;
 public class Task02 {
     public static void main(String[] args) {
         Integer[] numbers = {-25, 136, -13, -224, -128, -67, 128, -21, 4, 211, 0};
+        System.out.println("sumFiveMaxAbsVal(numbers) = " + sumFiveMaxAbsVal(numbers));
+    }
 
-        System.out.println(Arrays.toString(numbers));
-
+    public static int sumFiveMaxAbsVal(Integer[] array) {
+        Arrays.sort(array, Comparator.comparing(Math::abs, Comparator.reverseOrder()));
+        int sum = 0;
+        for (int i = 0; i < 5; i++) {
+            sum += array[i];
+        }
+        return sum;
     }
 }
