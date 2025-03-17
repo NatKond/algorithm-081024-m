@@ -1,5 +1,3 @@
-package org.telran.lecture_06_quick.tasks;
-
 // "Призеры олимпиады"
 // По результатам олимпиады участники награждаются дипломами.
 // Набравшие одинаковые баллы получают дипломы одинаковой степени.
@@ -14,13 +12,4 @@ package org.telran.lecture_06_quick.tasks;
 // Выход
 // 5
 
-// 1 3 4 3 5 6 7 7 6 1
-
-// 7 7 6 6 5 4 3 3 1 1
-
-public class Task03 {
-    public static void main(String[] args) {
-        Integer[] results = {1, 3, 4, 3, 5, 6, 7, 7, 6, 1};
-
-    }
-}
+let results = [1, 3, 4, 3, 5, 6, 7, 7, 6, 1]

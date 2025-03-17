@@ -1,4 +1,4 @@
-package org.telran.lecture_06_quick.tasks;
+package org.telran.lecture_06_quick.hw;
 
 // "Призеры олимпиады"
 // По результатам олимпиады участники награждаются дипломами.
