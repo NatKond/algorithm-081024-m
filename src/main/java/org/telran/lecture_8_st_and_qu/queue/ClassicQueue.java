@@ -16,7 +16,7 @@ public class ClassicQueue {
 
     public void enqueue(int item) {
         if (size == items.length) {
-            System.out.println("Queue is full");
+            throw new RuntimeException("Queue is full. Capacity = " + items.length);
         } else {
             items[tail] = item;
             tail = (tail + 1) % items.length; // Циклический буфер
@@ -26,8 +26,7 @@ public class ClassicQueue {
 
     public int dequeue() {
         if (isEmpty()) {
-            System.out.println("Queue is empty");
-            return -1;
+            throw new RuntimeException("Queue is empty." );
         } else {
             int item = items[head];
             head = (head + 1) % items.length; // Циклический буфер
@@ -39,8 +38,7 @@ public class ClassicQueue {
 
     public int peek() {
         if (isEmpty()) {
-            System.out.println("Queue is empty");
-            return -1;
+            throw new RuntimeException("Queue is empty." );
         } else {
             return items[head];
         }

@@ -41,34 +41,23 @@ public class DynamicArray {
 
     // function remove last element
     public void remove() {
-        // TODO-2[complete]: реализовать метод
         if (this.count == 0) {
-            throw new Error("Empty array");
+            throw new Error("The array is empty.");
         }
         this.count--;
     }
 
     // function add an element at given index
     public void addAt(int index, int data) {
-        if (count < size) { // Есть места хватает
-            // TODO-3: убрать дублирование кода
-            for (int i = count - 1; i >= index; i--) {
-                array[i + 1] = array[i]; // сдвигаем все элементы вправо от текущего индекса
-            }
-
-            array[index] = data;
-            count++;
-
-        } else { // Есть места не хватает
+        if (count >= size) { // Есть места хватает
             growSize();
-
-            for (int i = count - 1; i >= index; i--) {
-                array[i + 1] = array[i]; // сдвигаем все элементы вправо от текущего индекса
-            }
-
-            array[index] = data;
-            count++;
         }
+        for (int i = count - 1; i >= index; i--) {
+            array[i + 1] = array[i]; // сдвигаем все элементы вправо от текущего индекса
+        }
+
+        array[index] = data;
+        count++;
     }
 
     // function shift all element of right side from given index in left
@@ -92,7 +81,6 @@ public class DynamicArray {
 
     public void set(int index, int data) {
         if (index >= count) {
-//            throw new Error("Index out of range");
             throw new ArrayIndexOutOfBoundsException("Index " + index + " out of bounds for length " + count);
         }
         array[index] = data;
@@ -107,29 +95,26 @@ public class DynamicArray {
         return Arrays.toString(result);
     }
 
-    public void clean(){
+    public void clean() {
         array = new int[1];
         count = 0;
         size = 1;
     }
 
     public int length() {
-        // TODO-1[complete]: реализуйте метод
         return count;
     }
 
     public static void main(String[] args) {
-//        DynamicArray data = new DynamicArray();
         DynamicArray data = new DynamicArray(new int[]{2, 4, 6, 8});
         data.add(1);
         data.add(2);
         data.add(3);
 
-//        System.out.println(Arrays.toString(data.getArray()));
-        System.out.println(data);
-//        data.set(2, 4);
-//        System.out.println(data);
-//        data.clean();
-//        System.out.println(data);
+        System.out.println(data + ", size =  " + data.length());
+        data.set(6, 4);
+        System.out.println(data + ", size =  " + data.length());
+        data.clean();
+        System.out.println(data + ", size =  " + data.length());
     }
 }

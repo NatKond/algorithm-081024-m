@@ -25,5 +25,34 @@ package org.telran.lecture_8_st_and_qu.hw;
 // Input: s = "([(]))"
 // Output: false
 
+import java.util.Queue;
+import java.util.Stack;
+
 public class ValidParentheses {
+    public static void main(String[] args) {
+        System.out.println("areParenthesesValid(\"()\") = " + areParenthesesValid("()"));
+        System.out.println("areParenthesesValid(\"(()())\") = " + areParenthesesValid("(()())"));
+        System.out.println("areParenthesesValid(\"[()[]{}]\") = " + areParenthesesValid("[()[]{}]"));
+        System.out.println("areParenthesesValid(\")))\") = " + areParenthesesValid(")))"));
+        System.out.println("areParenthesesValid(\"))]})\") = " + areParenthesesValid(")))"));
+        System.out.println("areParenthesesValid(\"([(]))\") = " + areParenthesesValid("([(]))"));
+    }
+
+    public static boolean areParenthesesValid(String s) {
+        Stack<Character> characterStack = new Stack<>();
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '[' || c == '{') {
+                characterStack.push(c);
+            } else {
+                if (!characterStack.isEmpty()) {
+                    char lastParenthesis = characterStack.pop();
+                    if ((lastParenthesis == '(' && c == ')') || (lastParenthesis == '[' && c == ']') || (lastParenthesis == '{' && c == '}')) {
+                        continue;
+                    }
+                }
+                return false;
+            }
+        }
+        return characterStack.isEmpty();
+    }
 }

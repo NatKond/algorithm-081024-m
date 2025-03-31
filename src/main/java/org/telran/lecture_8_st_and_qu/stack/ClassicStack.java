@@ -1,5 +1,7 @@
 package org.telran.lecture_8_st_and_qu.stack;
 
+import java.util.NoSuchElementException;
+
 public class ClassicStack {
 
     private final int[] data;
@@ -15,10 +17,10 @@ public class ClassicStack {
     // push elements to the top of stack
     public void push(int x) {
         if (isFull()) {
-            throw new Error("Stack OverFlow");
+            throw new StackOverflowError("Stack is full, capacity = " + capacity);
         } else {
             // insert element on top of stack
-//            System.out.println("Inserting " + x);
+            System.out.println("Inserting " + x);
             data[++top] = x;
         }
     }
@@ -27,7 +29,7 @@ public class ClassicStack {
     public int pop() {
         // if stack is empty no element to pop
         if (isEmpty()) {
-            throw new Error("Stack is empty");
+            throw new NoSuchElementException("Stack is empty.");
         }
         // pop element from top of stack
         return data[top--];
@@ -49,8 +51,8 @@ public class ClassicStack {
     }
 
     public int peek() {
-        if (isEmpty()) {
-            throw new Error("Stack is empty");
+        if (top < 0) {
+            throw new NoSuchElementException("Stack is empty.");
         } else {
             return data[top];
         }
