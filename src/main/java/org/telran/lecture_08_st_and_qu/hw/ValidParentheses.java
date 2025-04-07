@@ -38,21 +38,23 @@ public class ValidParentheses {
         System.out.println("areParenthesesValid(\"([(]))\") = " + areParenthesesValid("([(]))"));
     }
 
-    public static boolean areParenthesesValid(String s) {
-        Stack<Character> characterStack = new Stack<>();
-        for (char c : s.toCharArray()) {
-            if (c == '(' || c == '[' || c == '{') {
-                characterStack.push(c);
+    public static boolean areParenthesesValid(String text) {
+        Stack<Character> parenthesesStack = new Stack<>();
+        for (char currentParenthesis : text.toCharArray()) {
+            if (currentParenthesis == '(' || currentParenthesis == '[' || currentParenthesis == '{') {
+                parenthesesStack.push(currentParenthesis);
             } else {
-                if (!characterStack.isEmpty()) {
-                    char lastParenthesis = characterStack.pop();
-                    if ((lastParenthesis == '(' && c == ')') || (lastParenthesis == '[' && c == ']') || (lastParenthesis == '{' && c == '}')) {
+                if (!parenthesesStack.isEmpty()) {
+                    char lastParenthesis = parenthesesStack.pop();
+                    if ((lastParenthesis == '(' && currentParenthesis == ')') ||
+                        (lastParenthesis == '[' && currentParenthesis == ']') ||
+                        (lastParenthesis == '{' && currentParenthesis == '}')) {
                         continue;
                     }
                 }
                 return false;
             }
         }
-        return characterStack.isEmpty();
+        return parenthesesStack.isEmpty();
     }
 }

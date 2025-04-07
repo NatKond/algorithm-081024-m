@@ -1,12 +1,38 @@
 package org.telran.lecture_09_linked_list.practice;
 
+import java.util.Objects;
+
 public class MyLinkedList {
     public static void main(String[] args) {
         // Пример использования
         LinkedList myList = new LinkedList();
-        myList.append(1);
         myList.append(2);
+        myList.append(4);
+        myList.append(6);
+
+        myList.prepend(1);
         myList.print();
+
+//        myList.insertAt(0,-1);
+        myList.insertAt(5,3);
+        myList.print();
+        myList.insertAt(3,2);
+        myList.print();
+        myList.insertAt(7,6);
+        myList.print();
+        myList.insertAt(0,0);
+        myList.print();
+
+        myList.remove(5);
+        myList.print();
+        myList.remove(5);
+        myList.print();
+
+        myList.removeAt(0);
+        myList.print();
+        myList.removeAt(5);
+        myList.print();
+
     }
 }
 
@@ -36,29 +62,32 @@ class LinkedList {
         Node newNode = new Node(data);
         if (head == null) {
             head = newNode;
-            tail = newNode;
         } else {
             tail.next = newNode;
-            tail = newNode;
         }
+        tail = newNode;
+        size++;
     }
 
     // Вставка элемента в начало списка
     public void prepend(int data) {
         Node newNode = new Node(data);
         if (head == null) {
-            head = newNode;
             tail = newNode;
         } else {
             newNode.next = head;
-            head = newNode;
         }
+        head = newNode;
         size++;
     }
 
     // Вставка элемента по индексу
     public void insertAt(int data, int index) {
-        //  FIXME: доработайте метод, добавив проверку на выход за границы списка
+        //  FIXME[complete]: доработайте метод, добавив проверку на выход за границы списка
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds for this array");
+        }
+
         if (index == 0) {
             prepend(data);
         } else if (index == size) {
@@ -79,19 +108,51 @@ class LinkedList {
 
     // Удаление элемента по значению
     public Integer remove(int data) {
-        // TODO: напишите реализацию метода
-        return 0;
+        Node current;
+        Node previous = null;
+        for (current = head; current != null; current = current.next) {
+            if (Objects.equals(data, current.data)) {
+                if (previous != null) {
+                    previous.next = current.next;
+                }else {
+                    head = current.next;
+                }
+                size--;
+                return current.data;
+            }
+            previous = current;
+        }
+        return -1;
     }
 
     // Удаление элемента по индексу
     public Integer removeAt(int index) {
         // TODO: напишите реализацию метода
-        return 0;
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds for this array");
+        }
+        Node current = head;
+        if (index == 0) {
+            head = head.next;
+        } else {
+            Node previous = null;
+            for (int i = 0; i < index; i++) {
+                previous = current;
+                current = current.next;
+            }
+            previous.next = current.next;
+        }
+        size--;
+        return current.data;
     }
 
     // Получение элемента по индексу
     public Integer getAt(int index) {
         //  FIXME: доработайте метод, добавив проверку на выход за границы списка
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds for this array");
+        }
+
         Node current = head;
         for (int i = 0; i < index; i++) {
             current = current.next;
@@ -112,6 +173,9 @@ class LinkedList {
     // Очистка списка
     public void clear() {
         // TODO: напишите реализацию метода
+        head = null;
+        tail = null;
+        size = 0;
     }
 
     // Вывод списка в консоль
@@ -121,6 +185,6 @@ class LinkedList {
             System.out.print(current.data + " -> ");
             current = current.next;
         }
-        System.out.println("null");
+        System.out.println("null, size = " + size);
     }
 }
