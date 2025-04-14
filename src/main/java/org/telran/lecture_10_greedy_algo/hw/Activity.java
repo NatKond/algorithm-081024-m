@@ -51,6 +51,72 @@ class Activity {
     }
 }
 
+class Interval {
+    private int start;
+    private int end;
+
+    public Interval(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
+    }
+}
+
+class Plan {
+    private List<Interval> intervals;
+
+    public Plan() {
+        this.intervals = new ArrayList<>();
+    }
+
+    private boolean checkInterval(Interval intervalToAdd){
+        if (intervals.isEmpty()){
+            intervals.add(intervalToAdd);
+            return true;
+        }
+        int currentStart = 10;
+        for (int i = 0; i < intervals.size(); i++) {
+            if ((intervalToAdd.getStart() >= currentStart) && (intervalToAdd.getEnd() <= intervals.get(i).getStart())){
+                if (intervalToAdd.getEnd() == intervals.get(i).getStart()){
+                    intervals.get(i).setStart(intervalToAdd.getStart());
+                } else if (intervalToAdd.getStart() == currentStart && i != 0) {
+                    intervals.get(i-1).setEnd(intervalToAdd.getEnd());
+                } else {
+                    intervals.add(intervalToAdd);
+                    intervals.sort(Comparator.comparingInt(Interval::getStart));
+                }
+                return true;
+            }
+            currentStart = intervals.get(i).getEnd();
+        }
+        if (intervals.getLast().getEnd() <= intervalToAdd.getStart()){
+            if (intervalToAdd.getStart() == intervals.getLast().getEnd()){
+                intervals.getLast().setEnd(intervalToAdd.getEnd());
+            }else {
+                intervals.add(intervalToAdd);
+                intervals.sort(Comparator.comparingInt(Interval::getStart));
+            }
+            return true;
+        }
+        return false;
+    }
+}
+
 class ActivityGreed {
     public static void main(String[] args) {
         ArrayList<Activity> activities = new ArrayList<>();
@@ -64,17 +130,17 @@ class ActivityGreed {
         print(activities);
         System.out.println("------");
 
-        List<Activity> selectedActivities = selectActivities(activities);
+        List<Activity> selectedActivities = getMaxCostActivities(activities);
         print(selectedActivities);
     }
 
-    public static List<Activity> selectActivities(List<Activity> allActivities) {
+    public static List<Activity> getMaxCostActivities(List<Activity> allActivities) {
         if (allActivities == null || allActivities.isEmpty()) {
             throw new IndexOutOfBoundsException("Invalid data.");
         }
 
         List<Activity> allActivitiesCopy = new ArrayList<>(allActivities);
-        allActivitiesCopy.sort(Comparator.comparingInt(activity ->((activity.getEnd() - activity.getStart()) * 100 / activity.getCost())));
+        allActivitiesCopy.sort(Comparator.comparingInt(activity -> ((activity.getEnd() - activity.getStart()) * 100 / activity.getCost())));
         List<Activity> selectedActivities = new ArrayList<>();
 
         Activity first = allActivitiesCopy.get(0);
@@ -97,7 +163,7 @@ class ActivityGreed {
         return selectedActivities;
     }
 
-    public static void print(List<Activity> list) {
+    private static void print(List<Activity> list) {
         for (Activity e : list) {
             System.out.println(e + " ");
         }
