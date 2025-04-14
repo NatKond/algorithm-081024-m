@@ -1,6 +1,8 @@
 package org.telran.lecture_10_greedy_algo.practice.coin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 // Напишите программу, используя жадный алгоритм.
@@ -18,8 +20,23 @@ public class NumberOfCoin {
     }
 
     private static List<Integer> getChange(int sum, int[] coins) {
+        if (coins == null || coins.length == 0){
+            throw new IndexOutOfBoundsException("Invalid coins array.");
+        }
+
         List<Integer> result = new ArrayList<>();
-        // You code here
-        return result;
+        List<Integer> coinsList = Arrays.stream(coins).boxed().sorted(Comparator.reverseOrder()).toList();
+        int sumCopy = sum;
+        for (int coin : coinsList) {
+            while (sumCopy >= coin) {
+                if (sumCopy == coin) {
+                    result.add(coin);
+                    return result;
+                }
+                sumCopy -= coin;
+                result.add(coin);
+            }
+        }
+        return new ArrayList<>();
     }
 }
