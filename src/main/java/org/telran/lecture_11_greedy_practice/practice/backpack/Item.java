@@ -12,4 +12,12 @@ public class Item {
         this.value = value;
         this.unit_value = value * 100/weight;
     }
+
+    @Override
+    public String toString() {
+        return name + ':' +
+                " weight = " + weight +
+                ", value = " + value +
+                ", unit_value = " + unit_value;
+    }
 }

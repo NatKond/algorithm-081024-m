@@ -51,6 +51,7 @@ class Activity {
     }
 }
 
+/*
 class Interval {
     private int start;
     private int end;
@@ -116,16 +117,19 @@ class Plan {
         return false;
     }
 }
-
+*/
 class ActivityGreed {
     public static void main(String[] args) {
-        ArrayList<Activity> activities = new ArrayList<>();
-        activities.add(new Activity("drawing", 10, 13, 10));
-        activities.add(new Activity("writing", 10, 17, 16));
-        activities.add(new Activity("eating", 12, 14, 8));
-        activities.add(new Activity("coding", 15, 19, 12));
-        activities.add(new Activity("reading", 13, 16, 14));
-        activities.add(new Activity("dancing", 17, 18, 6));
+        List<Activity> activities = new ArrayList<>(
+                List.of(
+                        new Activity("drawing", 10, 13, 60),
+                        new Activity("writing", 10, 17, 40),
+                        new Activity("eating", 12, 14, 40),
+                        new Activity("coding", 15, 19, 40),
+                        new Activity("reading", 13, 16, 100),
+                        new Activity("dancing", 17, 18, 20)
+                )
+        );
 
         print(activities);
         System.out.println("------");
@@ -140,7 +144,10 @@ class ActivityGreed {
         }
 
         List<Activity> allActivitiesCopy = new ArrayList<>(allActivities);
-        allActivitiesCopy.sort(Comparator.comparingInt(activity -> ((activity.getEnd() - activity.getStart()) * 100 / activity.getCost())));
+//        allActivitiesCopy.sort(Comparator.comparingDouble(
+//                (Activity activity) -> ((double) activity.getCost() /(activity.getEnd() - activity.getStart()))).reversed());
+        allActivitiesCopy.sort(Comparator.comparingInt(((Activity a) -> -a.getCost()))
+                .thenComparing(Activity::getEnd));
         List<Activity> selectedActivities = new ArrayList<>();
 
         Activity first = allActivitiesCopy.get(0);
