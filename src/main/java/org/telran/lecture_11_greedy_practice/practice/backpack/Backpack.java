@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Backpack {
+
     public static void main(String[] args) {
         List<Item> items = List.of( // Исходный набор предметов
                 new Item("Sunscreen", 2, 3),

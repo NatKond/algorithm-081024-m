@@ -17,4 +17,5 @@ package org.telran.lecture_08_st_and_qu.practice;
 // Пояснение: [10,20,30,40,50] — возрастающий подмассив с максимальной суммой 150.
 
 public class MaxAscendingSum {
+
 }
