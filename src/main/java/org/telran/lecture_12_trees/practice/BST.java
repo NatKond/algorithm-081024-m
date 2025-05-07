@@ -54,7 +54,6 @@ class BST {
      * @param newNode Новый узел.
      */
     private void insertNode(Node node, Node newNode) {
-        // TODO-1[complete]: Доработайте код, чтобы все ключи были уникальные.
         if (newNode.key < node.key) {
             if (node.left == null) {
                 node.left = newNode;
@@ -93,7 +92,6 @@ class BST {
      * @return Найденный узел или null, если узел не найден.
      */
     private Node searchNode(Node node, int key) {
-        // TODO-3[complete]: напишите реализацию метода
         if (node == null) {
             return null;
         }
@@ -113,11 +111,8 @@ class BST {
      * @return Минимальный узел или null, если дерево пустое.
      */
     public Node min() {
-
-        // TODO-4: напишите реализацию метода
         Node current = root;
         Node previous = null;
-        // TODO-5: напишите реализацию метода
         while(current != null){
             previous = current;
             current = current.left;
@@ -134,17 +129,14 @@ class BST {
     public Node max() {
         Node current = root;
         Node previous = null;
-        // TODO-5: напишите реализацию метода
         while(current != null){
             previous = current;
             current = current.right;
         }
-
         return previous;
     }
 
     public int length() {
-        // TODO-2[complete]: реализуйте метод, возвращающий количество узлов в дереве
         return length;
     }
 
