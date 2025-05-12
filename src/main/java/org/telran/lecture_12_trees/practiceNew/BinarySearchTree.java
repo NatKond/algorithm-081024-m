@@ -31,6 +31,7 @@ public class BinarySearchTree {
             length++;
             return;
         }
+        // insertNodeRec(root,value);
 
         Node currentNode = root;
         while (true) {
@@ -42,7 +43,7 @@ public class BinarySearchTree {
                     length++;
                     return;
                 }
-            } else if (value > root.getValue()) {
+            } else if (value > currentNode.getValue()) {
                 if (currentNode.getRight() != null) {
                     currentNode = currentNode.getRight();
                 } else {
@@ -55,7 +56,6 @@ public class BinarySearchTree {
                 return;
             }
         }
-
     }
 
     /**
@@ -86,14 +86,8 @@ public class BinarySearchTree {
      * @return Узел или null.
      */
     public Node getNode(int value) {
-        // TODO: реализуйте поиск узла
-        throw new UnsupportedOperationException("getNode() is not implemented yet");
-    }
-
-    /**
-     * Рекурсивно ищет узел с заданным значением.
-     */
-    private Node searchNodeRec(Node node, int value) {
+        if (root == null) return null;
+        // return searchNodeRec(root, value);
         Node currentNode = root;
         while (currentNode != null) {
             if (value < currentNode.getValue()) {
@@ -108,11 +102,26 @@ public class BinarySearchTree {
     }
 
     /**
+     * Рекурсивно ищет узел с заданным значением.
+     */
+    private Node searchNodeRec(Node node, int value) {
+        if (node == null) return null;
+        if (value < node.getValue()) {
+            return searchNodeRec(node.getLeft(), value);
+        } else if (value > node.getValue()) {
+            return searchNodeRec(node.getRight(), value);
+        } else {
+            return node;
+        }
+    }
+
+    /**
      * Находит минимальный узел в дереве.
      *
      * @return Узел с минимальным значением или null.
      */
     public Node min() {
+        if (root == null) return null;
         Node currentNode = root;
         while (true) {
             if (currentNode.getLeft() != null) {
@@ -129,6 +138,7 @@ public class BinarySearchTree {
      * @return Узел с максимальным значением или null.
      */
     public Node max() {
+        if (root == null) return null;
         Node currentNode = root;
         while (true) {
             if (currentNode.getRight() != null) {
@@ -179,8 +189,7 @@ public class BinarySearchTree {
      * Проверяет, содержится ли значение в дереве.
      */
     public boolean contains(int value) {
-        // TODO: реализуйте метод contains
-        throw new UnsupportedOperationException("contains() is not implemented yet");
+        return getNode(value) != null;
     }
 
     /**
@@ -195,6 +204,7 @@ public class BinarySearchTree {
         bst.insert(1);
         bst.insert(4);
         bst.insert(0);
+        System.out.println(bst.getNode(4));
         System.out.println(bst.length());
         bst.displayTree();
     }

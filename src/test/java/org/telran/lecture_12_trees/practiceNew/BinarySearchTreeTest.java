@@ -32,9 +32,9 @@ class BinarySearchTreeTest {
         for (int value : values) {
             bst.insert(value);
         }
-
-        assertEquals(7, bst.length(), "Tree should have correct length after multiple inserts");
         bst.displayTree();
+        assertEquals(7, bst.length(), "Tree should have correct length after multiple inserts");
+
         /*for (int value : values) {
             assertTrue(bst.contains(value), "Tree should contain all inserted values");
         }*/
