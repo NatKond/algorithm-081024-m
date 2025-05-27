@@ -143,7 +143,14 @@ public class AVLTree {
      */
     public Node max() {
         // TODO-5: напишите реализацию метода
-        return new Node(0, "zero"); // Заглушка
+        if (root == null) {
+            return null;
+        }
+        Node currentNode = root;
+        while (currentNode.right != null) {
+            currentNode = currentNode.right;
+        }
+        return currentNode;
     }
 
     public int length() {
@@ -156,7 +163,7 @@ public class AVLTree {
         if (node == null) {
             return 0;
         }
-        return Math.max(this.getHeight(node.left), this.getHeight(node.right)) + 1;
+        return Math.max(getHeight(node.left), getHeight(node.right)) + 1;
 
     }
 
@@ -164,17 +171,17 @@ public class AVLTree {
         if (node == null) {
             return;
         }
-        node.balanceFactor = this.getHeight(node.right) - this.getHeight(node.left);
+        node.balanceFactor = getHeight(node.right) - getHeight(node.left);
         if (node.balanceFactor > 1 || node.balanceFactor < -1) {
-            this.isBalanced = false;
+            isBalanced = false;
         }
-        // console.log("key:", node.key, "bf:", node.balanceFactor);
-        this.updateBalanceFactor(node.right);
-        this.updateBalanceFactor(node.left);
+        //System.out.println("key: " + node.key + " bf: " + node.balanceFactor);
+        updateBalanceFactor(node.right);
+        updateBalanceFactor(node.left);
     }
 
     public boolean isBalanced() {
-        return this.isBalanced;
+        return isBalanced;
     }
 
     /**
@@ -200,7 +207,7 @@ public class AVLTree {
             String displayPrefix = prefix + (isLeft ? "├── " : "└── ");
             String directionIndicator = isLeft ? "L: " : "R: ";
 
-            System.out.println(displayPrefix + directionIndicator + node.key + ":" + node.balanceFactor);
+            System.out.println(displayPrefix + directionIndicator + node.key + ": " + node.balanceFactor);
 
             String childPrefix = prefix + (isLeft ? "│   " : "    ");
             if (node.left != null || node.right != null) {
@@ -217,7 +224,7 @@ public class AVLTree {
         tree.insert(2, "1");
         tree.insert(15, "1");
         tree.insert(16, "1");
-
+        tree.displayTree();
         Node minNode = tree.min();
         if (minNode == null) {
             System.out.println("Дерево пустое");
