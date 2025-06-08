@@ -164,7 +164,6 @@ public class AVLTree {
             return 0;
         }
         return Math.max(getHeight(node.left), getHeight(node.right)) + 1;
-
     }
 
     private void updateBalanceFactor(Node node) {

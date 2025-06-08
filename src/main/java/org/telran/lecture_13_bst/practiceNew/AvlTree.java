@@ -1,10 +1,8 @@
 package org.telran.lecture_13_bst.practiceNew;
 
-import org.telran.lecture_12_trees.practiceNew.Node;
 import org.telran.utils.TreePrinter;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.NoSuchElementException;
 
 public class AvlTree {
     private AVLNode root;
@@ -16,7 +14,7 @@ public class AvlTree {
      * @return высота или 0, если null
      */
     private int height(AVLNode node) {
-        // TODO: Если node == null, вернуть 0, иначе вернуть node.getHeight()
+        // Если node == null, вернуть 0, иначе вернуть node.getHeight()
         if (node == null) {
             return 0;
         }
@@ -42,7 +40,7 @@ public class AvlTree {
      * @param node узел
      */
     private void updateHeight(AVLNode node) {
-        // TODO: Установить высоту как 1 + max(высота левого, высота правого)
+        // Установить высоту как 1 + max(высота левого, высота правого)
         if (node == null) {
             return;
         }
@@ -71,22 +69,24 @@ public class AvlTree {
      * @return Новый корень поддерева
      */
     private AVLNode rotateRight(AVLNode yNode) {
-        if (yNode == null){
-            return null;
-        }
-        AVLNode xNode = yNode.getLeft();
-        // TODO: Выполнить малое правое вращение
         // 1. Сохраняем левое поддерево yNode
         //    Это узел x, который станет новым корнем поддерева
+        if (yNode == null || yNode.getLeft() == null) {
+            return yNode;
+        }
+        AVLNode xNode = yNode.getLeft();
+
         // 2. Делаем вращение:
         //    - правый ребёнок x становится левым ребёнком yNode
+        AVLNode bSubTree = xNode.getRight();
+        yNode.setLeft(bSubTree);
         //    - x становится родителем yNode (yNode правый ребенок для x)
-        //
+        xNode.setRight(yNode);
         // 3. Обновляем высоты узлов: сначала yNode, затем x
-        //
+        updateHeight(yNode);
+        updateHeight(xNode);
         // 4. Возвращаем x как новый корень поддерева
-
-        throw new UnsupportedOperationException("method rotateRight(AVLNode zNode) is not implemented yet");
+        return xNode;
     }
 
     /**
@@ -102,7 +102,7 @@ public class AvlTree {
      *
      *  До поворота :    Y              После поворота:       X
      *                  / \                                  / \
-     *                 A   X                                Z   C
+     *                 A   X                                Y   C
      *                    / \                              / \
      *                   B   C                            A   B
      * </pre>
@@ -111,13 +111,21 @@ public class AvlTree {
      * @return Новый корень поддерева
      */
     private AVLNode rotateLeft(AVLNode yNode) {
-        // TODO: Выполнить малое левое вращение
         // 1. Сохраняем правое поддерево yNode — это x
+        if (yNode == null || yNode.getRight() == null) {
+            return yNode;
+        }
+        AVLNode xNode = yNode.getRight();
         // 2. x.left (B) становится правым поддеревом yNode
+        AVLNode bSubTree = xNode.getLeft();
+        yNode.setRight(bSubTree);
         // 3. x становится родителем yNode
+        xNode.setLeft(yNode);
         // 4. Обновляем высоты узлов (сначала yNode, потом x)
+        updateHeight(xNode);
+        updateHeight(yNode);
         // 5. Возвращаем x как новый корень поддерева
-        throw new UnsupportedOperationException("method rotateLeft(AVLNode zNode) is not implemented yet");
+        return xNode;
     }
 
     /**
@@ -125,19 +133,24 @@ public class AvlTree {
      * <pre>
      *  До поворота:     Z      После первого поворота:    Z     После второго поворота:   Y
      *                  / \                               / \                             / \
-     *                 X   D                            Y   D                           X   Z
-     *                / \                              / \                             / \ / \
-     *               A   Y                            X   C                           A  B C  D
-     *                  / \                          / \
-     *                 B   C                        A   B
+     *                 X   D                             Y   D                           X   Z
+     *                / \                               / \                             / \ / \
+     *               A   Y                             X   C                           A  B C  D
+     *                  / \                           / \
+     *                 B   C                         A   B
      * </pre>
      *
      * @param zNode Узел с нарушением баланса
      * @return Новый корень сбалансированного поддерева
      */
     private AVLNode rotateLeftRight(AVLNode zNode) {
-        // TODO: Сначала малое левое вращение левого поддерева, затем правое вращение
-        throw new UnsupportedOperationException("method rotateLeftRight(AVLNode zNode) is not implemented yet");
+        // Сначала малое левое вращение левого поддерева, затем правое вращение
+        if (zNode == null || zNode.getLeft() == null) {
+            return zNode;
+        }
+        AVLNode yNode = rotateLeft(zNode.getLeft());
+        zNode.setLeft(yNode);
+        return rotateRight(zNode);
     }
 
     /**
@@ -155,8 +168,13 @@ public class AvlTree {
      * @return Новый корень сбалансированного поддерева
      */
     private AVLNode rotateRightLeft(AVLNode zNode) {
-        // TODO: Сначала малое правое вращение правого поддерева, затем левое вращение
-        throw new UnsupportedOperationException("method rotateRightLeft(AVLNode zNode) is not implemented yet");
+        //Сначала малое правое вращение правого поддерева, затем левое вращение
+        if (zNode == null || zNode.getRight() == null) {
+            return zNode;
+        }
+        AVLNode yNode = rotateRight(zNode.getRight());
+        zNode.setRight(yNode);
+        return rotateLeft(zNode);
     }
 
     /**
@@ -166,14 +184,33 @@ public class AvlTree {
      * @return сбалансированный узел
      */
     private AVLNode rebalance(AVLNode node) {
-        // TODO:
         //  1. Вычислить balanceFactor
+        if (node == null) {
+            return null;
+        }
+        //  1. Вычислить balanceFactor
+        updateHeight(node);
+        int balance = balanceFactor(node);
         //  2. В зависимости от значения выполнить соответствующее вращение:
+        if (balance > 1) {
+            if (balanceFactor(node.getLeft()) >= 0) {
+                return rotateRight(node);
+            } else {
+                return rotateLeftRight(node);
+            }
+        }
+        if (balance < -1) {
+            if (balanceFactor(node.getRight()) < 0) {
+                return rotateLeft(node);
+            } else {
+                return rotateRightLeft(node);
+            }
+        }
         //     > 1 и левый баланс >= 0 → rotateRight
         //     > 1 и левый баланс < 0  → rotateLeftRight
         //     < -1 и правый баланс <= 0 → rotateLeft
         //     < -1 и правый баланс > 0  → rotateRightLeft
-        throw new UnsupportedOperationException("method rebalance(AVLNode node) is not implemented yet");
+        return node;
     }
 
     /**
@@ -193,22 +230,21 @@ public class AvlTree {
      * @return корень поддерева
      */
     private AVLNode insertRecursively(AVLNode current, int value) {
-        // TODO:
         //  1. Если current == null, создать новый узел
-        //  2. Если value < current.value, рекурсивно вставить влево
-        //  3. Если value > current.value, рекурсивно вправо
-        //  4. Обновить высоту и сбалансировать
-
         if (current == null) {
             return new AVLNode(value);
         }
-
+        //  2. Если value < current.value, рекурсивно вставить влево
         if (value < current.getValue()) {
             current.setLeft(insertRecursively(current.getLeft(), value));
-        } else if (value > current.getValue()) {
+        }
+        //  3. Если value > current.value, рекурсивно вправо
+        else if (value > current.getValue()) {
             current.setRight(insertRecursively(current.getRight(), value));
         }
-        return current;
+        //  4. Обновить высоту и сбалансировать
+        return rebalance(current);
+        //return current;
     }
 
     /**
@@ -228,14 +264,31 @@ public class AvlTree {
      * @return новый корень поддерева
      */
     private AVLNode removeRecursively(AVLNode node, int value) {
-        // TODO:
         //  1. Ищем узел для удаления
+        if (node == null) {
+            return null;
+        }
         //  2. Удаление:
-        //     - нет детей: вернуть null
-        //     - один ребёнок: вернуть не-null ребёнка
-        //     - два ребёнка: найти min в правом поддереве, заменить значение, удалить min
-        //  3. Обновить высоту и ребалансировать
-        throw new UnsupportedOperationException("method removeRecursively(AVLNode node, int value) is not implemented yet");
+        if (value < node.getValue()) {
+            node.setLeft(removeRecursively(node.getLeft(), value));
+        } else if (value > node.getValue()) {
+            node.setRight(removeRecursively(node.getRight(), value));
+        } else {
+            if (node.getLeft() == null && node.getRight() == null) {
+                return null;
+            }
+            if (node.getLeft() == null) {
+                return node.getRight();
+            }
+            if (node.getRight() == null) {
+                return node.getLeft();
+            }
+            AVLNode minNode = min(node.getRight());
+            node.setValue(minNode.getValue());
+            node.setRight(removeRecursively(node.getRight(), node.getValue()));
+
+        }
+        return rebalance(node);
     }
 
     /**
@@ -244,11 +297,14 @@ public class AvlTree {
      * @return минимальное значение
      */
     public int min() {
+        if (root == null) {
+            throw new NoSuchElementException();
+        }
         return min(root).getValue();
     }
 
     private AVLNode min(AVLNode node) {
-        // TODO: Идти по левым ссылкам, пока не достигнем самого левого узла
+        // Идти по левым ссылкам, пока не достигнем самого левого узла
         if (node.getLeft() == null) return node;
         return min(node.getLeft());
     }
@@ -259,11 +315,14 @@ public class AvlTree {
      * @return максимальное значение
      */
     public int max() {
+        if (root == null) {
+            throw new NoSuchElementException();
+        }
         return max(root).getValue();
     }
 
     private AVLNode max(AVLNode node) {
-        // TODO: Идти по правым ссылкам, пока не достигнем самого правого узла
+        // Идти по правым ссылкам, пока не достигнем самого правого узла
         if (node.getRight() == null) return node;
         return max(node.getRight());
     }
@@ -289,16 +348,15 @@ public class AvlTree {
     }
 
     private AVLNode searchRecursively(AVLNode node, int value) {
-        // TODO: Классический бинарный поиск
+        // Классический бинарный поиск
         if (node == null) {
             return null;
         }
-
         if (value < node.getValue()) {
-            searchRecursively(node.getLeft(), value);
+            return searchRecursively(node.getLeft(), value);
         }
         if (value > node.getValue()) {
-            searchRecursively(node.getRight(), value);
+            return searchRecursively(node.getRight(), value);
         }
         return node;
     }
@@ -313,8 +371,8 @@ public class AvlTree {
     }
 
     private int size(AVLNode node) {
-        // TODO: Рекурсивно считаем количество узлов: size(left) + size(right) + 1
-        if (node == null){
+        // Рекурсивно считаем количество узлов: size(left) + size(right) + 1
+        if (node == null) {
             return 0;
         }
         return size(node.getLeft()) + size(node.getRight()) + 1;
@@ -338,7 +396,7 @@ public class AvlTree {
     }
 
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("method isEmpty() is not implemented yet");
+        return size() == 0;
     }
 
     protected AVLNode getRoot() {
@@ -359,14 +417,15 @@ public class AvlTree {
 
         AvlTree tree = new AvlTree();
 
-        //TODO: Вставка значений в дерево (например, от 1 до 12)
-        for (int i = 1; i <= 12; i++) {
+        // Вставка значений в дерево (например, от 1 до 12)
+        for (int i = 1; i < 14; i++) {
             tree.insert(i);
+            printer.printTree(tree.root);
+            System.out.println(tree.balanceFactor(tree.root));
         }
-
-        int[] array = new int[10];
-        System.out.println(array.length);
-        //TODO: Вывести размер и визуализировать дерево
+        tree.remove(5);
+        //Вывести размер и визуализировать дерево
+        System.out.println(tree.isBalanced(tree.getRoot()));
         System.out.println("Size = " + tree.size());
         printer.printTree(tree.root);
     }
