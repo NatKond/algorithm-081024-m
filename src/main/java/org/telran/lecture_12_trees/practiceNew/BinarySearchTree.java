@@ -1,5 +1,6 @@
 package org.telran.lecture_12_trees.practiceNew;
 
+import org.telran.lecture_13_bst.practiceNew.AVLNode;
 import org.telran.utils.TreePrinter;
 
 public class BinarySearchTree {
@@ -132,6 +133,18 @@ public class BinarySearchTree {
         }
     }
 
+    private Node min(Node node){
+        if (node == null) return null;
+        Node currentNode = node;
+        while (true) {
+            if (currentNode.getLeft() != null) {
+                currentNode = currentNode.getLeft();
+            } else {
+                return currentNode;
+            }
+        }
+    }
+
     /**
      * Находит максимальный узел в дереве.
      *
@@ -171,18 +184,31 @@ public class BinarySearchTree {
      * Удаляет узел с заданным значением.
      */
     public void remove(int value) {
+        root = removeRec(root, value);
 
-
-        // TODO: реализуйте метод удаления узла
-        throw new UnsupportedOperationException("remove() is not implemented yet");
     }
 
     /**
      * Рекурсивно удаляет узел.
      */
     private Node removeRec(Node node, int value) {
-        // TODO: реализуйте рекурсивное удаление
-        throw new UnsupportedOperationException("removeRec() is not implemented yet");
+        if (node == null) return null;
+
+        if (value < node.getValue()) {
+            node.setLeft(removeRec(node.getLeft(), value));
+        } else if (value > node.getValue()) {
+            node.setRight(removeRec(node.getRight(), value));
+        } else {
+            length--;
+
+            if (node.getLeft() == null) return node.getRight();
+            if (node.getRight() == null) return node.getLeft();
+
+            Node minNode = min(node.getRight());
+            node.setValue(minNode.getValue());
+            node.setRight(removeRec(node.getRight(), minNode.getValue()));
+        }
+        return node;
     }
 
     /**
@@ -204,9 +230,17 @@ public class BinarySearchTree {
         bst.insert(1);
         bst.insert(4);
         bst.insert(0);
+        bst.remove(1);
         System.out.println(bst.getNode(4));
         System.out.println(bst.length());
         bst.displayTree();
+
+        System.out.println("bst.contains(3) = " + bst.contains(3));
+        System.out.println("bst.contains(5) = " + bst.contains(5));
+        System.out.println("bst.contains(2) = " + bst.contains(2));
+        System.out.println("bst.contains(1) = " + bst.contains(1));
+        System.out.println("bst.contains(4) = " + bst.contains(4));
+        System.out.println("bst.contains(0) = " + bst.contains(0));
     }
 
 }

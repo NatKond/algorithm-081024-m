@@ -227,6 +227,7 @@ class BinarySearchTreeTest {
 
         assertEquals(initialLength, bst.length(), "Tree length should not change when removing non-existing node");
 
+        bst.displayTree();
         // Check structure is unchanged
         for (int value : values) {
             assertTrue(bst.contains(value), "Tree should still contain all original values");

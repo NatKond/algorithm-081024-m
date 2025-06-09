@@ -122,8 +122,8 @@ public class AvlTree {
         // 3. x становится родителем yNode
         xNode.setLeft(yNode);
         // 4. Обновляем высоты узлов (сначала yNode, потом x)
-        updateHeight(xNode);
         updateHeight(yNode);
+        updateHeight(xNode);
         // 5. Возвращаем x как новый корень поддерева
         return xNode;
     }
